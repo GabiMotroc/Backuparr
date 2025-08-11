@@ -1,12 +1,13 @@
-﻿using Backuparr.Utils;
+﻿using Backuparr.Interfaces;
+using Backuparr.Utils;
 using System.IO.Compression;
 
 namespace Backuparr.Services;
 
-public class ArchiveService
+public class ArchiveService : IArchiveService
 {
-    private readonly Constants _constants;
-    public ArchiveService(Constants constants)
+    private readonly IConstants _constants;
+    public ArchiveService(IConstants constants)
     {
         _constants = constants;
     }
