@@ -2,3 +2,7 @@
 **/bin/
 **/obj
 **/wwwroot/lib
+.vs/Backuparr/*
+.vs/ProjectEvaluation/backuparr.metadata.v9.bin
+.vs/ProjectEvaluation/backuparr.projects.v9.bin
+.vs/ProjectEvaluation/backuparr.strings.v9.bin
