@@ -1,5 +1,6 @@
 using Backuparr.BgService;
 using Backuparr.Components;
+using Backuparr.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHostedService<BackupBgService>();
+builder.Services.AddHostedService<DailyBackupService>();
+
+builder.Services.AddScoped<ArchiveService>();
 
 DotNetEnv.Env.Load();
 
