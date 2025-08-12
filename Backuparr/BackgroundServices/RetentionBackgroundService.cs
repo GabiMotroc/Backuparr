@@ -2,10 +2,10 @@
 
 namespace Backuparr.BackgroundServices;
 
-public class BackupRetentionBackgroundService : BackgroundService
+public class RetentionBackgroundService : BackgroundService
 {
     private readonly IServiceScopeFactory _providerFactory;
-    public BackupRetentionBackgroundService(IServiceScopeFactory providerFactory)
+    public RetentionBackgroundService(IServiceScopeFactory providerFactory)
     {
         _providerFactory = providerFactory;
     }
@@ -14,8 +14,8 @@ public class BackupRetentionBackgroundService : BackgroundService
         while (!stoppingToken.IsCancellationRequested)
         {
             using var scope = _providerFactory.CreateScope();
-            var backupRetentionService = scope.ServiceProvider.GetRequiredService<IBackupRetentionService>();
-            backupRetentionService.SaveLatestBackups();
+            var backupRetentionService = scope.ServiceProvider.GetRequiredService<IRetentionService>();
+            backupRetentionService.DeleteOldBackups();
             await Task.Delay(60000, stoppingToken);
         }
     }

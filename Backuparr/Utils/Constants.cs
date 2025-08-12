@@ -6,7 +6,7 @@ public class Constants : IConstants
 {
     private readonly string sourceFolder = Environment.GetEnvironmentVariable("SOURCE_FOLDER");
     private readonly string backupFolder = Environment.GetEnvironmentVariable("DESTINATION_FOLDER");
-    private readonly int latestBackups = 4;
+    private readonly string sizeRetention = Environment.GetEnvironmentVariable("SIZE_RETENTION");
     public string GetSourceFolder ()
     {
         return sourceFolder;
@@ -19,7 +19,7 @@ public class Constants : IConstants
 
     public int GetLatestBackups()
     {
-        return latestBackups;
+        return int.Parse(sizeRetention);
     }
     
 }

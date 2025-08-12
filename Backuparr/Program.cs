@@ -12,11 +12,11 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddHostedService<DailyBackupService>();
 
-builder.Services.AddHostedService<BackupRetentionBackgroundService>();
+builder.Services.AddHostedService<RetentionBackgroundService>();
 
 builder.Services.AddScoped<IArchiveService, ArchiveService>();
 
-builder.Services.AddScoped<IBackupRetentionService, BackupRetentionService>();
+builder.Services.AddScoped<IRetentionService, RetentionService>();
 
 builder.Services.AddScoped<IConstants, Constants>();
 
