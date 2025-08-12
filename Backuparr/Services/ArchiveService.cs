@@ -13,7 +13,7 @@ public class ArchiveService : IArchiveService
     }
     public void CreateArchive()
     {
-        string today = DateTime.Now.ToString("yyyy-MM-dd--hh-m");
+        string today = DateTime.Now.ToString("yyyy-MM-dd--hh-m-ss");
         string zipPath = Path.Combine(_constants.GetBackupFolder(), $"backup-{today}.zip");
 
         ZipFile.CreateFromDirectory(_constants.GetSourceFolder(), zipPath, CompressionLevel.Optimal, includeBaseDirectory: false);

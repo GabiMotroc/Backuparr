@@ -1,7 +1,7 @@
 ﻿using Backuparr.Interfaces;
 using Backuparr.Services;
 
-namespace Backuparr.BgService;
+namespace Backuparr.BackgroundServices;
 
 public class DailyBackupService : BackgroundService
 {

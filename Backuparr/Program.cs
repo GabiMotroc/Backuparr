@@ -1,4 +1,4 @@
-using Backuparr.BgService;
+using Backuparr.BackgroundServices;
 using Backuparr.Components;
 using Backuparr.Interfaces;
 using Backuparr.Services;
@@ -12,7 +12,11 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddHostedService<DailyBackupService>();
 
+builder.Services.AddHostedService<RetentionBackgroundService>();
+
 builder.Services.AddScoped<IArchiveService, ArchiveService>();
+
+builder.Services.AddScoped<IRetentionService, RetentionService>();
 
 builder.Services.AddScoped<IConstants, Constants>();
 
