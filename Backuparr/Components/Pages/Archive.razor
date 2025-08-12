@@ -1,0 +1,53 @@
+﻿@page "/archive"
+@attribute [StreamRendering]
+@using Backuparr.Interfaces
+@inject IConstants _constants
+
+<PageTitle>Backups</PageTitle>
+
+<h1>Backups</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (backups == null) 
+ {
+     <p><em>Loading...</em></p> 
+ } 
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th aria-label="Archive Name">Name</th>
+                <th aria-label="Archive Date">Date</th>
+                <th aria-label="Archive Size">Size</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var backup in backups)
+             { 
+                <tr>
+                    <td>@backup.Name</td>
+                    <td>@backup.CreationTime</td>
+                    <td>@backup.Length</td>
+                    <td>
+                        <button>
+                            <i class="fa-regular fa-download"></i>
+                        </button>
+                    </td>
+                </tr> 
+             } 
+        </tbody>
+    </table>
+}
+
+@code {
+    private DirectoryInfo backupsDirectory;
+    private List<FileInfo> backups;
+    protected override async Task OnInitializedAsync()
+    {
+        backupsDirectory = new DirectoryInfo(_constants.GetBackupFolder());
+        backups = backupsDirectory.GetFiles().OrderByDescending(f => f.CreationTime).ToList();
+    }
+}

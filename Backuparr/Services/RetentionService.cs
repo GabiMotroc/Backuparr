@@ -13,7 +13,7 @@ public class RetentionService : IRetentionService
     public void DeleteOldBackups()
     {
         DirectoryInfo backupsDirectory = new DirectoryInfo(_constants.GetBackupFolder());
-        int sizeRetention = _constants.GetLatestBackups();
+        int sizeRetention = _constants.GetRetentionSize();
         var backups = backupsDirectory.GetFiles().OrderByDescending(f => f.CreationTime)
             .Skip(sizeRetention);
         foreach (var backup in backups) 

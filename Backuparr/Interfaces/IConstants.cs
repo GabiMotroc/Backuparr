@@ -4,6 +4,6 @@ public interface IConstants
 {
     string GetSourceFolder();
     string GetBackupFolder();
-    int GetLatestBackups();
+    int GetRetentionSize();
 }
 
