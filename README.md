@@ -1,9 +1,15 @@
 # Backuparr
-**Backuparr** is a lightweight Docker service designed to back up folders in an *Arr stack (Sonarr, Radarr, Lidarr, etc.).
+**Backuparr** is a lightweight Docker service designed to back up folders.
 
 It runs on a configurable schedule, archives the selected folders, and stores them for safekeeping — perfect for self-hosters who want to protect their media metadata, configuration files, and more.
 
 Retention is handled by **limiting the number of backups kept**, automatically deleting the oldest ones when the limit is reached.
+
+While originally designed for *Arr applications* (Sonarr, Radarr, Lidarr, etc.), it works just as well for:
+- Game server worlds (Minecraft, Valheim, etc.)
+- Configuration files (/etc/nginx, /etc/letsencrypt, etc.)
+- NAS shares and personal documents
+- Application data directories
 
 
 ## ✨ Features
