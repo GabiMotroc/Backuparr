@@ -3,6 +3,8 @@ using Backuparr.Components;
 using Backuparr.Interfaces;
 using Backuparr.Services;
 using Backuparr.Utils;
+using Blazorise;
+using Blazorise.Icons.FontAwesome;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +24,10 @@ builder.Services.AddScoped<IConstants, Constants>();
 
 DotNetEnv.Env.Load();
 
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -37,5 +39,7 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapControllers();
 
 app.Run();

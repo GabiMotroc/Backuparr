@@ -18,5 +18,25 @@ public class ArchiveService : IArchiveService
 
         ZipFile.CreateFromDirectory(_constants.GetSourceFolder(), zipPath, CompressionLevel.Optimal, includeBaseDirectory: false);
     }
+
+    public IEnumerable<FileInfo> GetBackups()
+    {
+        DirectoryInfo backupsDirectory = new DirectoryInfo(_constants.GetBackupFolder());
+        return backupsDirectory.GetFiles().OrderByDescending(f => f.CreationTime).ToList();
+    }
+
+    public string GetBackupFile (string fileName)
+    {
+        var filePath = Path.Combine(_constants.GetBackupFolder(), fileName);
+        if (File.Exists(filePath))
+        {
+            return filePath;
+        }
+        return null;
+    }
+    public void DownloadArchive()
+    {
+        
+    }
 }
 

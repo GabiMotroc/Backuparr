@@ -2,12 +2,12 @@
 @attribute [StreamRendering]
 @using Backuparr.Interfaces
 @inject IConstants _constants
+@inject IArchiveService _archiveService
+@inject NavigationManager _navi
 
 <PageTitle>Backups</PageTitle>
 
 <h1>Backups</h1>
-
-<p>This component demonstrates showing data.</p>
 
 @if (backups == null) 
  {
@@ -30,11 +30,11 @@ else
                 <tr>
                     <td>@backup.Name</td>
                     <td>@backup.CreationTime</td>
-                    <td>@backup.Length</td>
+                    <td>@backup.Length B</td>
                     <td>
-                        <button>
-                            <i class="fa-regular fa-download"></i>
-                        </button>
+                         <button class="btn btn-primary btn-sm" @onclick="() => onClick(backup.Name)"> 
+                            <i class="fa-solid fa-download"></i> 
+                        </button> 
                     </td>
                 </tr> 
              } 
@@ -43,11 +43,14 @@ else
 }
 
 @code {
-    private DirectoryInfo backupsDirectory;
-    private List<FileInfo> backups;
+    private IEnumerable<FileInfo> backups;
     protected override async Task OnInitializedAsync()
     {
-        backupsDirectory = new DirectoryInfo(_constants.GetBackupFolder());
-        backups = backupsDirectory.GetFiles().OrderByDescending(f => f.CreationTime).ToList();
+        backups = _archiveService.GetBackups();
+    }
+
+    private async Task onClick(string filename)
+    {
+        _navi.NavigateTo($"api/archive/download/{filename}", true);
     }
 }
