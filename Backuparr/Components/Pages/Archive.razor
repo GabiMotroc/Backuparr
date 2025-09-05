@@ -1,5 +1,6 @@
 ﻿@page "/archive"
 @attribute [StreamRendering]
+@using Backuparr.Components.Layout
 @using Backuparr.Interfaces
 @inject IConstants _constants
 @inject IArchiveService _archiveService
@@ -10,9 +11,9 @@
 <h1>Backups</h1>
 
 @if (backups == null) 
- {
-     <p><em>Loading...</em></p> 
- } 
+{
+    <p><em>Loading...</em></p> 
+} 
 else
 {
     <table class="table">
@@ -22,28 +23,38 @@ else
                 <th aria-label="Archive Date">Date</th>
                 <th aria-label="Archive Size">Size</th>
                 <th>Download</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var backup in backups)
-             { 
+            { 
                 <tr>
                     <td>@backup.Name</td>
                     <td>@backup.CreationTime</td>
                     <td>@backup.Length B</td>
                     <td>
-                         <button class="btn btn-primary btn-sm" @onclick="() => onClick(backup.Name)"> 
+                        <button class="btn btn-primary btn-sm" @onclick="() => onClick(backup.Name)"> 
                             <i class="fa-solid fa-download"></i> 
                         </button> 
                     </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @onclick="() => DeleteArchive(backup.Name)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
                 </tr> 
-             } 
+            } 
         </tbody>
     </table>
 }
 
+<ConfirmationDialog @ref="ModalDialog" />
+
 @code {
     private IEnumerable<FileInfo> backups;
+    private ConfirmationDialog ModalDialog { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         backups = _archiveService.GetBackups();
@@ -53,4 +64,16 @@ else
     {
         _navi.NavigateTo($"api/archive/download/{filename}", true);
     }
+
+    private async Task DeleteArchive(string filename)
+    {
+
+        var confirmed = await ModalDialog.Show("Delete archive", $"Are you sure you want to delete '{filename}'?");
+        if (confirmed)
+        {
+            _archiveService.DeleteArchive(filename);
+            backups = _archiveService.GetBackups();
+            //StateHasChanged();
+        }
+    }   
 }

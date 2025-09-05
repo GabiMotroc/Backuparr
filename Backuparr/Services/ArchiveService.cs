@@ -1,6 +1,8 @@
 ﻿using Backuparr.Interfaces;
 using Backuparr.Utils;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.IO.Compression;
+using System.Linq;
 
 namespace Backuparr.Services;
 
@@ -24,19 +26,15 @@ public class ArchiveService : IArchiveService
         DirectoryInfo backupsDirectory = new DirectoryInfo(_constants.GetBackupFolder());
         return backupsDirectory.GetFiles().OrderByDescending(f => f.CreationTime).ToList();
     }
-
-    public string GetBackupFile (string fileName)
+    public void DeleteArchive (string fileName)
     {
-        var filePath = Path.Combine(_constants.GetBackupFolder(), fileName);
-        if (File.Exists(filePath))
+        DirectoryInfo backupsDirectory = new DirectoryInfo(_constants.GetBackupFolder());
+        var backup = backupsDirectory.GetFiles().FirstOrDefault(f=>f.Name==fileName);
+        if (backup == null)
         {
-            return filePath;
+            return;
         }
-        return null;
-    }
-    public void DownloadArchive()
-    {
-        
+        backup.Delete();
     }
 }
 

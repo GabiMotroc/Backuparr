@@ -1,0 +1,83 @@
+﻿@inherits ComponentBase
+
+@if (IsVisible)
+{
+    <div class="modal @modalClass" tabindex="-1" role="dialog" style="display:@modalDisplay; overflow-y: auto;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Title</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" @onclick="Cancel">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <p>@Message</p>
+                        <div class="flex justify-end space-x-2">
+                            <button class="btn btn-primary" @onclick="Confirm">Confirm</button>
+                            <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private string modalDisplay = "none;";
+    private string modalClass = string.Empty;
+    private bool showBackdrop = false;
+
+    public bool IsVisible { get; set; }
+    public string Title { get; set; } = "Confirm Action";
+    public string Message { get; set; } = "Are you sure?";
+
+    private TaskCompletionSource<bool> _taskCompletionSource;
+
+    public void Close()
+    {
+        modalDisplay = "none";
+        modalClass = string.Empty;
+        showBackdrop = false;
+        IsVisible = false;
+    }
+
+    public Task<bool> Show(string title, string message)
+    {
+        modalDisplay = "block";
+        modalClass = "show";
+        showBackdrop = true;
+
+        Title = title;
+        Message = message;
+        IsVisible = true;
+        StateHasChanged();
+
+        _taskCompletionSource = new TaskCompletionSource<bool>();
+        return _taskCompletionSource.Task;
+    }
+
+    protected void Confirm()
+    {
+        Close();
+        _taskCompletionSource?.SetResult(true);
+        StateHasChanged();
+    }
+
+    protected void Cancel()
+    {
+        Close();
+        _taskCompletionSource?.SetResult(false);
+        StateHasChanged();
+    }
+}

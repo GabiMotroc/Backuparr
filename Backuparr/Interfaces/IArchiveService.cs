@@ -4,6 +4,6 @@ public interface IArchiveService
 {
     void CreateArchive();
     IEnumerable<FileInfo> GetBackups();
-    string GetBackupFile(string fileName);
+    void DeleteArchive(string fileName);
 }
 
